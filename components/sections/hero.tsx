@@ -2,125 +2,244 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowDown } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useRef, useState, useEffect } from "react"
+import { gsap } from "gsap"
+import { Plus } from "lucide-react"
 
 export function Hero() {
-  const titleText = "Wujudkan Solusi Digital yang Membantu Bisnis Anda Berkembang Lebih Cepat."
-  const words = titleText.split(" ")
-  const [maskReveal, setMaskReveal] = useState(0)
-  const [opacity, setOpacity] = useState(0)
-  const [isDesktop, setIsDesktop] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const pixelGridRef = useRef<HTMLDivElement>(null)
+  const tagsRef = useRef<HTMLDivElement>(null)
+  const customCursorRef = useRef<HTMLDivElement>(null)
+  const [showCustomCursor, setShowCustomCursor] = useState(false)
 
   useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768)
+    const tagsElement = tagsRef.current
+    const cursorElement = customCursorRef.current
+
+    if (!tagsElement || !cursorElement) return
+
+    let cursorX = 0
+    let cursorY = 0
+
+    const handleMouseMove = (e: MouseEvent) => {
+      cursorX = e.clientX
+      cursorY = e.clientY
+
+      gsap.to(cursorElement, {
+        x: cursorX - 15,
+        y: cursorY - 15,
+        duration: 0.3,
+        ease: "power2.out",
+      })
     }
 
-    checkDesktop()
-    window.addEventListener("resize", checkDesktop)
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      const maxScroll = 500
-      const revealPercentage = Math.min(100, (scrollPosition / maxScroll) * 100)
-      const calculatedOpacity = Math.min(1, scrollPosition / maxScroll)
-      setMaskReveal(revealPercentage)
-      setOpacity(calculatedOpacity)
+    const handleMouseEnter = () => {
+      setShowCustomCursor(true)
     }
 
-    handleScroll()
-    window.addEventListener("scroll", handleScroll)
+    const handleMouseLeave = () => {
+      setShowCustomCursor(false)
+    }
+
+    tagsElement.addEventListener("mouseenter", handleMouseEnter)
+    tagsElement.addEventListener("mouseleave", handleMouseLeave)
+    tagsElement.addEventListener("mousemove", handleMouseMove)
+
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("resize", checkDesktop)
+      tagsElement.removeEventListener("mouseenter", handleMouseEnter)
+      tagsElement.removeEventListener("mouseleave", handleMouseLeave)
+      tagsElement.removeEventListener("mousemove", handleMouseMove)
     }
   }, [])
 
+  const handleMouseLeave = () => {
+    if (!cardRef.current || !pixelGridRef.current) return
+
+    const gridSize = 4
+    const pixelSize = 100 / gridSize
+
+    pixelGridRef.current.innerHTML = ""
+
+    const totalPixels = gridSize * gridSize
+    const clearIndices = new Set<number>()
+    while (clearIndices.size < 3) {
+      clearIndices.add(Math.floor(Math.random() * totalPixels))
+    }
+
+    let pixelIndex = 0
+    for (let row = 0; row < gridSize; row++) {
+      for (let col = 0; col < gridSize; col++) {
+        if (clearIndices.has(pixelIndex)) {
+          pixelIndex++
+          continue
+        }
+
+        const pixel = document.createElement("div")
+        const isIndigo = Math.random() < 0.5
+
+        const normalizedPosition = (col + (gridSize - 1 - row)) / ((gridSize - 1) * 2)
+        const targetOpacity = 0.5 + normalizedPosition * 0.5
+
+        pixel.className = `absolute ${isIndigo ? "bg-indigo-600" : "bg-black"}`
+        pixel.style.width = `${pixelSize}%`
+        pixel.style.height = `${pixelSize}%`
+        pixel.style.left = `${col * pixelSize}%`
+        pixel.style.top = `${row * pixelSize}%`
+        pixel.style.opacity = "0"
+        pixel.style.display = "block"
+        pixel.setAttribute("data-target-opacity", targetOpacity.toString())
+        pixelGridRef.current.appendChild(pixel)
+
+        pixelIndex++
+      }
+    }
+
+    const pixels = Array.from(pixelGridRef.current.children)
+    const animationStepDuration = 0.45
+    const actualPixelCount = pixels.length
+    const staggerDuration = animationStepDuration / actualPixelCount
+
+    const tl = gsap.timeline()
+
+    tl.to(cardRef.current, {
+      scale: 0.995,
+      duration: 0.2,
+      ease: "power2.in",
+    })
+
+    tl.to(
+      pixels,
+      {
+        opacity: (index, target) => {
+          const el = target as HTMLElement
+          return el.getAttribute("data-target-opacity") || "1"
+        },
+        duration: 0.45,
+        ease: "power2.in",
+        stagger: {
+          each: staggerDuration,
+          from: "random",
+        },
+      },
+      "<",
+    )
+
+    tl.to(
+      pixels,
+      {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.out",
+      },
+      `+=${animationStepDuration}`,
+    )
+
+    tl.to(
+      cardRef.current,
+      {
+        scale: 1,
+        duration: 0.3,
+        ease: "power2.in",
+      },
+      "<",
+    )
+
+    tl.set(pixels, {
+      display: "none",
+    })
+  }
+
   return (
-    <section className="min-h-screen flex flex-col justify-center pt-20 relative overflow-hidden">
-      <div className="absolute -right-32 md:-right-48 top-32 md:top-40 w-[500px] h-[500px] md:w-[750px] md:h-[750px] pointer-events-none animate-orb-rotate -z-10 scale-125">
-        <Image src="/images/orb.png" alt="" width={750} height={750} className="w-full h-full" priority />
-      </div>
+    <section className="pt-6 sm:pt-10 px-0 sm:px-[1.5%] bg-light">
+      {/* SVG Mask Definition */}
+      <svg width="0" height="0" className="absolute pointer-events-none">
+        <defs>
+          <mask id="heroMask" maskContentUnits="objectBoundingBox">
+            <rect width="1" height="1" fill="black" />
+            <path
+              d="M 0 0.22
+                 V 0.9866
+                 C 0 0.9942, 0.0021 1, 0.0047 1
+                 H 0.9953
+                 C 0.9979 1, 1 0.9942, 1 0.9866
+                 V 0.22
+                 Q 1 0.21, 0.992 0.21
+                 H 0.9753
+                 Q 0.9673 0.21, 0.9673 0.20
+                 V 0.14
+                 Q 0.9673 0.13, 0.9593 0.13
+                 H 0.9425
+                 Q 0.9345 0.13, 0.9345 0.12
+                 V 0.06
+                 Q 0.9345 0.05, 0.9265 0.05
+                 H 0.0735
+                 Q 0.0655 0.05, 0.0655 0.06
+                 V 0.12
+                 Q 0.0655 0.13, 0.0575 0.13
+                 H 0.0407
+                 Q 0.0327 0.13, 0.0327 0.14
+                 V 0.20
+                 Q 0.0327 0.21, 0.0247 0.21
+                 H 0.008
+                 Q 0 0.21, 0 0.22
+                 Z"
+              fill="white"
+            />
+          </mask>
+        </defs>
+      </svg>
 
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-20 md:py-32 md:pb-4 pb-4 pt-4 md:pt-32">
-        <div className="max-w-4xl">
-          
+      <div className="relative isolate w-full min-h-[calc(100svh-4vh)] sm:min-h-[calc(100svh-6vh)]">
+        <div
+          className="absolute inset-0 overflow-hidden sm:rounded-2xl"
+          style={{
+            mask: "url(#heroMask)",
+            WebkitMask: "url(#heroMask)",
+          }}
+        >
+          <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
+            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/liquid-metal-video_yX6NvjdW-6bLYorR3Ihmlwjivg3pjA978qrSKRU.mp4" type="video/mp4" />
+          </video>
 
-          {/* Main Title with animated words */}
-          <h1 className="text-5xl sm:text-6xl lg:text-[96px] font-bold tracking-tight leading-[1] text-balance md:text-9xl">
-            {words.map((word, index) => (
-              <span
-                key={index}
-                className={`hero-word my-0 py-2 font-sans font-normal text-5xl md:text-7xl ${word === "AI" ? "ai-gradient-word" : ""}`}
-                style={{
-                  animationDelay: `${index * 0.1}s`,
-                  marginRight: index < words.length - 1 ? "0.25em" : "0",
-                  ...(word === "AI"
-                    ? {
-                        background: "linear-gradient(135deg, #ff006e 0%, #8b5cf6 33%, #203eec 66%, #00d4ff 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                        filter:
-                          "drop-shadow(0 0 20px rgba(255, 0, 110, 0.3)) drop-shadow(0 0 30px rgba(139, 92, 246, 0.3)) drop-shadow(0 0 40px rgba(0, 212, 255, 0.2))",
-                      }
-                    : {}),
-                }}
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/25 via-transparent to-zinc-950/45" />
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/45 via-zinc-950/15 to-transparent" />
+            <div className="absolute inset-0 [background:radial-gradient(90%_60%_at_10%_70%,rgba(0,0,0,.55)_0%,transparent_70%)]" />
+          </div>
+
+          <div className="absolute bottom-6 left-4 right-4 sm:left-6 sm:right-6 max-w-[min(46rem,92vw)] md:bottom-8 md:left-8 z-10">
+            <div
+              ref={cardRef}
+              onMouseLeave={handleMouseLeave}
+              className="relative overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 md:p-8 transition-transform duration-500 ease-in hover:scale-[1.01]"
+            >
+              <div ref={pixelGridRef} className="absolute inset-0 pointer-events-none z-10" />
+
+              <h1 className="text-balance text-2xl/tight sm:text-4xl/tight md:text-5xl/tight tracking-tight text-indigo-50">
+                Wujudkan Solusi Digital yang Membantu Bisnis Anda Berkembang Lebih Cepat.
+              </h1>
+              <p className="mt-3 text-xs/5 sm:text-sm/6 text-indigo-100/85 max-w-prose">
+                Kami merancang website dan aplikasi kustom profesional di Karawang, Cikarang, Bekasi, dan Subang. Tidak hanya tampil menawan, sistem kami dibangun untuk mengotomatisasi operasional, menghemat biaya, dan mendongkrak konversi penjualan Anda secara signifikan.
+              </p>
+              <Link
+                href="#demo"
+                className="mt-4 inline-flex items-center rounded-full border border-indigo-400/50 bg-indigo-600/10 px-4 py-2 text-xs sm:text-sm font-medium text-indigo-50 backdrop-blur hover:bg-indigo-600/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
-                {word}
-              </span>
-            ))}
-          </h1>
-
-          <p className="mt-8 max-w-xl leading-relaxed text-left text-lg text-zinc-500 ml-0">
-       Kami merancang website dan aplikasi kustom profesional di Karawang, Cikarang, Bekasi, dan Subang. Tidak hanya tampil menawan, sistem kami dibangun untuk mengotomatisasi operasional, menghemat biaya, dan mendongkrak konversi penjualan Anda secara signifikan.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mt-10 w-full sm:w-auto">
-            <Link
-              href="#contact"
-              className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 text-base font-medium text-white rounded-full transition-all relative overflow-hidden group text-center"
-              style={{
-                background: "linear-gradient(135deg, #203eec 0%, #00d4ff 100%)",
-                boxShadow: "0 4px 20px rgba(32, 62, 236, 0.3)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 8px 30px rgba(32, 62, 236, 0.5), 0 0 40px rgba(0, 212, 255, 0.3)"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(32, 62, 236, 0.3)"
-              }}
-            >
-              Konsultasi Gratis
-            </Link>
-            
-            <Link
-              href="#works"
-              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-base font-medium transition-colors text-center"
-              style={{ color: "#203eec" }}
-            >
-              Proyek Kami
-              <ArrowDown className="w-4 h-4" />
-            </Link>
+                Konsultasi Gratis
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* <div className="w-full max-w-7xl mx-auto mt-8 rounded-[30px] overflow-hidden">
-        <Image
-          src="/images/founder.png"
-          alt="Designer workspace"
-          width={1000}
-          height={500}
-          className="w-full h-auto transition-all duration-100 ease-out"
-          style={{
-            opacity: opacity,
-            clipPath: isDesktop ? `inset(${100 - maskReveal}% 0 0 0)` : "none",
-          }}
-          priority
+        <div
+          ref={customCursorRef}
+          className={`fixed w-[30px] h-[30px] rounded-full bg-indigo-600 pointer-events-none z-50 transition-opacity duration-200 ${
+            showCustomCursor ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ left: 0, top: 0 }}
         />
-      </div> */}
+      </div>
     </section>
   )
 }
