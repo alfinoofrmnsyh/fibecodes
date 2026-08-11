@@ -8,22 +8,46 @@ import { steps } from "./data"
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isVisible, setIsVisible] = useState(false) // State untuk mendeteksi apakah section sudah terlihat
+  const sectionRef = useRef<HTMLElement>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Auto-advance steps
+  // Observer untuk mendeteksi saat section masuk ke viewport (layar pengguna)
   useEffect(() => {
-    if (!isPaused) {
-      intervalRef.current = setInterval(() => {
-        setActiveStep((prev) => (prev + 1) % steps.length)
-      }, 5000)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.3 } // Berjalan saat 30% section terlihat di layar
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
     }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
+      }
+    }
+  }, [])
+
+  // Auto-advance steps hanya berjalan jika section sudah terlihat DAN tidak di-pause
+  useEffect(() => {
+    if (!isVisible || isPaused) return
+
+    intervalRef.current = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length)
+    }, 4000)
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isPaused])
+  }, [isVisible, isPaused])
 
   const pauseAnimation = () => setIsPaused(true)
   const resumeAnimation = () => setIsPaused(false)
@@ -45,6 +69,7 @@ export default function HowItWorks() {
 
   return (
     <section
+      ref={sectionRef}
       className="py-20 bg-background flex justify-center items-center"
       aria-labelledby="how-it-works-title"
       onMouseEnter={pauseAnimation}

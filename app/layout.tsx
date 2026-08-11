@@ -11,16 +11,27 @@ const interTight = Inter_Tight({
 })
 
 export const metadata: Metadata = {
-  title: "Portfolio | Digital Product Designer",
-  description: "Independent digital product designer crafting thoughtful, pixel-perfect experiences for the web.",
-  keywords: ["design", "portfolio", "UI/UX", "product design", "digital design"],
-  authors: [{ name: "Portfolio" }],
-  openGraph: {
-    title: "Portfolio | Digital Product Designer",
-    description: "Independent digital product designer crafting thoughtful, pixel-perfect experiences for the web.",
-    type: "website",
+  title: "Fibecodes | Jasa Pembuatan Website & Aplikasi Kustom Profesional",
+  description: "Wujudkan solusi digital yang membantu bisnis Anda berkembang lebih cepat. Spesialis pembuatan website dan aplikasi kustom untuk efisiensi operasional dan konversi penjualan.",
+  icons: {
+    icon: "/images/logo-fibe.png", // Sesuaikan dengan lokasi file logo Anda di folder public
   },
-    generator: 'v0.app'
+  keywords: [
+    "jasa pembuatan website",
+    "software house karawang",
+    "aplikasi kustom",
+    "web developer bekasi",
+    "digital agency cikarang",
+    "pembuatan sistem perusahaan",
+  ],
+  authors: [{ name: "Fibecodes" }],
+  openGraph: {
+    title: "Fibecodes | Jasa Pembuatan Website & Aplikasi Kustom Profesional",
+    description: "Solusi digital dan pengembangan software kustom untuk mengotomatisasi operasional serta mendongkrak konversi bisnis Anda.",
+    type: "website",
+    locale: "id_ID",
+  },
+  generator: 'v0.app',
 }
 
 export const viewport: Viewport = {

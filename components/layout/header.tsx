@@ -58,13 +58,13 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled 
-            ? "bg-light-950/80 backdrop-blur-md border-b border-light-800 shadow-lg shadow-black/20" 
+            ? "bg-zinc-350/80 backdrop-blur-md shadow-lg shadow-black/20" 
             : "bg-transparent",
         )}
       >
         <div className="max-w-[1280px] mx-auto px-6 md:px-12">
           <nav className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo - Diperbesar ukurannya */}
+            {/* Logo - Diperbesar ukurannya di mobile */}
             <Link
               href="/"
               onClick={(e) => {
@@ -74,7 +74,7 @@ export function Header() {
               className="flex items-center gap-2"
               aria-label="Jasa Pembuatan Website Karawang Bekasi Cikarang Subang"
             >
-              <div className="relative w-[60px] h-[30px] md:w-[100px] md:h-[50px]">
+              <div className="relative w-[110px] h-[40px] md:w-[130px] md:h-[50px]">
                 <Image
                   src="/images/logo.png"
                   alt="Logo Jasa Pembuatan Website Karawang Bekasi Cikarang Subang"
@@ -92,7 +92,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-sm text-light-300 hover:text-white transition-colors font-medium"
+                  className="text-sm text-zinc-950 hover:text-cyan-600 transition-colors font-medium"
                 >
                   {item.label}
                   <span className="text-xs ml-1 opacity-40 font-normal">({item.number})</span>
@@ -110,15 +110,15 @@ export function Header() {
                   boxShadow: "0 4px 20px rgba(32, 62, 236, 0.3)",
                 }}
               >
-                <span className="relative z-10">Let's Talk</span>
+                <span className="relative z-10">Konsultasi</span>
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-[#203eec] to-[#00d4ff]" />
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden p-2 -mr-2 text-zinc-200" aria-label="Open menu">
-              <Menu className="w-6 h-6" />
+            {/* Mobile Menu Button - Diubah warnanya jadi putih agar terlihat */}
+            <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden p-2 -mr-2 text-white" aria-label="Open menu">
+              <Menu className="w-7 h-7" />
             </button>
           </nav>
         </div>
@@ -126,11 +126,11 @@ export function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-zinc-950 md:hidden">
+        <div className="fixed inset-0 z-50 bg-white md:hidden">
           <div className="flex flex-col h-full p-6">
             <div className="flex items-center justify-between">
               <Link href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); setIsMobileMenuOpen(false); }} className="flex items-center">
-                <div className="relative w-36 h-10">
+                <div className="relative w-44 h-12">
                   <Image
                     src="/images/logo.png"
                     alt="Logo Jasa Website"
@@ -139,8 +139,8 @@ export function Header() {
                   />
                 </div>
               </Link>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-zinc-200" aria-label="Close menu">
-                <X className="w-6 h-6" />
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-zinc-950" aria-label="Close menu">
+                <X className="w-7 h-7" />
               </button>
             </div>
             <nav className="flex flex-col gap-6 mt-12">
@@ -149,7 +149,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-2xl font-semibold text-zinc-100 hover:text-cyan-400 transition-colors"
+                  className="text-2xl font-semibold text-zinc-950 hover:text-cyan-600 transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -165,7 +165,7 @@ export function Header() {
                   boxShadow: "0 4px 20px rgba(32, 62, 236, 0.3)",
                 }}
               >
-                <span className="relative z-10">Let's Talk</span>
+                <span className="relative z-10">Konsultasi</span>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-[#203eec] to-[#00d4ff]" />
               </Link>
             </div>
