@@ -105,24 +105,24 @@ export function SelectedWorks() {
       aria-labelledby="portfolio-section-title"
     >
       {/* Background Ambient Prismatic Soft Glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/4 right-0 w-[600px] h-[500px] rounded-full blur-[140px] opacity-40"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(217, 208, 247, 0.45) 0%, rgba(215, 240, 244, 0.35) 50%, transparent 75%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-10 left-0 w-[500px] h-[450px] rounded-full blur-[140px] opacity-40"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(215, 240, 244, 0.5) 0%, rgba(217, 208, 247, 0.25) 50%, transparent 75%)",
-        }}
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute top-1/4 right-0 w-[600px] h-[500px] rounded-full blur-[140px] opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(217, 208, 247, 0.45) 0%, rgba(215, 240, 244, 0.35) 50%, transparent 75%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-10 left-0 w-[500px] h-[450px] rounded-full blur-[140px] opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(215, 240, 244, 0.5) 0%, rgba(217, 208, 247, 0.25) 50%, transparent 75%)",
+          }}
+        />
+      </div>
 
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 relative z-10">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-20 pb-6 border-b border-[#E5E4DF]">
           <div className="max-w-2xl">
@@ -155,26 +155,27 @@ export function SelectedWorks() {
         </div>
 
         {/* Sticky Stacking Cards Container */}
-        <div className="relative space-y-8 md:space-y-12">
+        <div className="relative space-y-8 md:space-y-12 pb-8 md:pb-16">
           {works.map((work, index) => (
             <div
               key={work.id}
-              className="relative lg:sticky lg:top-[var(--stack-top)]"
+              className="sticky top-[var(--stack-top-mobile)] md:top-[var(--stack-top-desktop)]"
               style={
                 {
-                  "--stack-top": `${96 + index * 6}px`,
+                  "--stack-top-mobile": `${72 + index * 10}px`,
+                  "--stack-top-desktop": `${96 + index * 12}px`,
                   zIndex: index + 1,
                 } as React.CSSProperties
               }
             >
-              <article className="group relative overflow-hidden rounded-[28px] sm:rounded-[36px] bg-white border border-[#E5E4DF] shadow-[0_16px_48px_-12px_rgba(32,37,43,0.08)] hover:shadow-[0_24px_54px_-10px_rgba(32,37,43,0.12)] hover:border-[#D9D0F7] transition-all duration-300">
+              <article className="group relative overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[36px] bg-white border border-[#E5E4DF] shadow-[0_12px_36px_-10px_rgba(32,37,43,0.12),0_2px_8px_-2px_rgba(32,37,43,0.04)] hover:shadow-[0_24px_54px_-10px_rgba(32,37,43,0.16)] hover:border-[#D9D0F7] transition-all duration-300">
                 {/* Subtle Iridescent Top Accent Line */}
                 <div
                   aria-hidden="true"
-                  className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-[#D9D0F7] to-transparent opacity-60"
+                  className="absolute top-0 left-6 right-6 sm:left-8 sm:right-8 h-px bg-gradient-to-r from-transparent via-[#D9D0F7] to-transparent opacity-60"
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch p-6 sm:p-8 md:p-10 lg:p-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch p-5 sm:p-8 md:p-10 lg:p-12">
                   {/* SISI INFORMASI (42%) */}
                   <div className="lg:col-span-5 flex flex-col justify-between order-2 lg:order-1">
                     <div>

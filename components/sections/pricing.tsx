@@ -336,22 +336,22 @@ export default function PricingSection() {
       aria-labelledby="pricing-heading"
     >
       {/* Subtle Ethereal Prismatic Refraction Accents */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full blur-[140px] opacity-70"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(217, 208, 247, 0.45) 0%, rgba(215, 240, 244, 0.35) 45%, transparent 75%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-0 w-[500px] h-[350px] rounded-full blur-[120px] opacity-40"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(215, 240, 244, 0.5) 0%, rgba(217, 208, 247, 0.2) 50%, transparent 80%)",
-        }}
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full blur-[140px] opacity-70"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(217, 208, 247, 0.45) 0%, rgba(215, 240, 244, 0.35) 45%, transparent 75%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-0 w-[500px] h-[350px] rounded-full blur-[120px] opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(215, 240, 244, 0.5) 0%, rgba(217, 208, 247, 0.2) 50%, transparent 80%)",
+          }}
+        />
+      </div>
 
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 relative z-10">
         {/* Section Header */}

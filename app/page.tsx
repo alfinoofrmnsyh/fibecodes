@@ -17,7 +17,7 @@ export default function HomePage() {
     <>
       <InitialLoader />
       <Header />
-      <main>
+      <main className="w-full max-w-full overflow-x-clip">
         <Hero />
         <About />
         {/* <ClientLogos /> */}

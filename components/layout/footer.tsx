@@ -43,7 +43,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-border bg-slate-50 text-slate-900">
+    <footer className="border-t border-border bg-slate-50 text-slate-900 w-full max-w-full overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
           

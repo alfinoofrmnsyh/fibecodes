@@ -49,7 +49,7 @@ export function InitialLoader() {
       role="status"
       aria-live="polite"
       aria-label="Loading Fibecodes"
-      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#F5F4F0] transition-opacity duration-350 ease-out select-none ${
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#F5F4F0] overflow-hidden w-full max-w-full transition-opacity duration-350 ease-out select-none ${
         fading ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
