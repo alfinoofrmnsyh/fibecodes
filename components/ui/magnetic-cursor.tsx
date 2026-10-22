@@ -4,17 +4,29 @@ import { useEffect, useRef, useState } from "react"
 
 export function MagneticCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const ringRef = useRef<HTMLDivElement>(null)
   const [isHovering, setIsHovering] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(false)
 
   useEffect(() => {
-    let animationFrameId: number
-    let targetX = 0
-    let targetY = 0
-    let currentX = 0
-    let currentY = 0
+    // Check user preferences: reduced motion or touch device
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const isTouch = window.matchMedia("(pointer: coarse)").matches
 
-    // Selectors for interactive elements
+    if (prefersReducedMotion || isTouch) {
+      return
+    }
+
+    setIsEnabled(true)
+
+    let animationFrameId: number
+    let targetX = -100
+    let targetY = -100
+    let currentX = -100
+    let currentY = -100
+    let ringX = -100
+    let ringY = -100
+
     const interactiveSelectors = [
       "a[href]",
       "button",
@@ -27,9 +39,8 @@ export function MagneticCursor() {
       targetX = e.clientX
       targetY = e.clientY
 
-      // Check if hovering over interactive element
-      const target = e.target as HTMLElement
-      const isInteractive = target.closest(interactiveSelectors)
+      const target = e.target as HTMLElement | null
+      const isInteractive = target ? target.closest(interactiveSelectors) : null
 
       if (isInteractive) {
         setIsHovering(true)
@@ -37,12 +48,10 @@ export function MagneticCursor() {
         const centerX = rect.left + rect.width / 2
         const centerY = rect.top + rect.height / 2
 
-        // Calculate distance from cursor to center
         const deltaX = targetX - centerX
         const deltaY = targetY - centerY
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
 
-        // Magnetic effect within 80px radius
         if (distance < 80) {
           const pullStrength = 0.3
           targetX = targetX - deltaX * pullStrength
@@ -54,16 +63,27 @@ export function MagneticCursor() {
     }
 
     const animate = () => {
-      // Smooth interpolation
-      const ease = 0.15
-      currentX += (targetX - currentX) * ease
-      currentY += (targetY - currentY) * ease
+      // Direct DOM manipulation - zero React re-renders per frame
+      const easeCursor = 0.2
+      const easeRing = 0.12
 
-      setPosition({ x: currentX, y: currentY })
+      currentX += (targetX - currentX) * easeCursor
+      currentY += (targetY - currentY) * easeCursor
+
+      ringX += (targetX - ringX) * easeRing
+      ringY += (targetY - ringY) * easeRing
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+      }
+
       animationFrameId = requestAnimationFrame(animate)
     }
 
-    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mousemove", handleMouseMove, { passive: true })
     animate()
 
     return () => {
@@ -72,48 +92,49 @@ export function MagneticCursor() {
     }
   }, [])
 
+  if (!isEnabled) {
+    return null
+  }
+
   return (
     <>
       {/* Main cursor dot */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden md:block will-change-transform"
         style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-          transition: isHovering ? "width 0.2s, height 0.2s" : "none",
+          transform: "translate3d(-100px, -100px, 0)",
         }}
       >
         <div
-          className="relative -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
+          className="relative -translate-x-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-200"
           style={{
-            width: isHovering ? "40px" : "8px",
-            height: isHovering ? "40px" : "8px",
-            transition: "width 0.2s, height 0.2s",
+            width: isHovering ? "36px" : "8px",
+            height: isHovering ? "36px" : "8px",
           }}
         />
       </div>
 
       {/* Outer ring */}
       <div
-        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference hidden md:block"
+        ref={ringRef}
+        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference hidden md:block will-change-transform"
         style={{
-          transform: `translate(${position.x}px, ${position.y}px)`,
-          transition: "transform 0.1s",
+          transform: "translate3d(-100px, -100px, 0)",
         }}
       >
         <div
-          className="relative -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40"
+          className="relative -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 transition-all duration-300"
           style={{
-            width: isHovering ? "60px" : "32px",
-            height: isHovering ? "60px" : "32px",
-            transition: "width 0.3s, height 0.3s",
+            width: isHovering ? "52px" : "28px",
+            height: isHovering ? "52px" : "28px",
           }}
         />
       </div>
 
-      {/* Global cursor style */}
+      {/* Global cursor style only applied when enabled and fine pointer */}
       <style jsx global>{`
-        @media (min-width: 768px) {
+        @media (min-width: 768px) and (pointer: fine) {
           * {
             cursor: none !important;
           }

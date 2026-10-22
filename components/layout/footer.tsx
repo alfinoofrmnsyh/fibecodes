@@ -1,19 +1,20 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
-import { Phone, Linkedin, Twitter, Instagram } from "lucide-react"
+import { Phone, Linkedin, Instagram } from "lucide-react"
 
 const socialLinks = [
-  { href: "#", icon: Phone, label: "Whatsapp" },
-  { href: "#", icon: Linkedin, label: "Linkedin" },
-  { href: "#", icon: Instagram, label: "Instagram" },
+  { href: "https://wa.me/6289615799089", icon: Phone, label: "Whatsapp" },
+  { href: "https://linkedin.com", icon: Linkedin, label: "Linkedin" },
+  { href: "https://instagram.com", icon: Instagram, label: "Instagram" },
 ]
 
 const serviceAreas = [
-  { label: "Jasa Pembuatan Website Karawang", href: "#contact" },
-  { label: "Jasa Pembuatan Web Cikarang", href: "#contact" },
-  { label: "Jasa Web & Aplikasi Subang", href: "#contact" },
-  { label: "Jasa Pembuatan Website Bekasi", href: "#contact" },
+  { label: "Jasa Pembuatan Website Karawang", href: "#about" },
+  { label: "Jasa Pembuatan Web Cikarang", href: "#about" },
+  { label: "Jasa Web & Aplikasi Subang", href: "#about" },
+  { label: "Jasa Pembuatan Website Bekasi", href: "#about" },
 ]
 
 const footerLinks = [
@@ -21,10 +22,26 @@ const footerLinks = [
   { href: "#about", label: "About" },
   { href: "#pricing", label: "Paket Harga" },
   { href: "#works", label: "Portfolio" },
-  { href: "#contact", label: "Contact" },
+  { href: "#faq", label: "FAQ & Bantuan" },
 ]
 
 export function Footer() {
+  const [contactInput, setContactInput] = useState("")
+  const [errorMsg, setErrorMsg] = useState("")
+
+  const handleConsultationSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = contactInput.trim()
+    if (!trimmed) {
+      setErrorMsg("Silakan masukkan email atau nomor WhatsApp Anda.")
+      return
+    }
+    setErrorMsg("")
+    const message = `Halo Fibecodes, saya ingin konsultasi mengenai pembuatan website/aplikasi digital. Kontak saya: ${trimmed}`
+    const waUrl = `https://wa.me/6289615799089?text=${encodeURIComponent(message)}`
+    window.open(waUrl, "_blank", "noopener,noreferrer")
+  }
+
   return (
     <footer className="border-t border-border bg-slate-50 text-slate-900">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-16 md:py-24">
@@ -40,27 +57,29 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4 mt-6">
               {socialLinks.map((social) => (
-                <Link
+                <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="p-2 rounded-full bg-slate-200 transition-colors hover:bg-opacity-10"
-                  style={{ ["--hover-bg" as any]: "#203eec20" }}
+                  style={{ ["--hover-bg" as string]: "#203eec20" } as React.CSSProperties}
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#203eec20")}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "")}
                   aria-label={social.label}
                 >
                   <social.icon className="w-4 h-4" style={{ color: "#203eec" }} />
-                </Link>
+                </a>
               ))}
             </div>
             <div className="mt-4">
-              <Link
+              <a
                 href="mailto:info@fibecodes.com"
                 className="text-sm font-medium transition-colors hover:underline"
                 style={{ color: "#203eec" }}
               >
                 info@fibecodes.com
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -100,48 +119,52 @@ export function Footer() {
 
         </div>
 
-        {/* Newsletter / Call to Action Bar */}
+        {/* Newsletter / WhatsApp Consultation Bar */}
         <div className="mt-16 pt-12 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h4 className="text-sm font-semibold mb-2 text-slate-900">Dapatkan Konsultasi Gratis</h4>
-            <p className="text-sm text-slate-600">Diskusikan kebutuhan pembuatan website atau sistem aplikasi bisnis Anda sekarang.</p>
+            <p className="text-sm text-slate-600">Diskusikan kebutuhan pembuatan website atau sistem aplikasi bisnis Anda langsung bersama tim kami.</p>
           </div>
-          <form className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              placeholder="Masukkan email atau No WhatsApp"
-              className="px-4 py-2.5 text-sm bg-white rounded-lg border border-slate-300 focus:ring-2 outline-none flex-1 shadow-sm"
-              style={{ ["--tw-ring-color" as any]: "#203eec" }}
-            />
-            <button
-              type="submit"
-              className="px-5 py-2.5 text-sm font-medium text-white rounded-lg transition-all relative overflow-hidden shrink-0"
-              style={{
-                background: "linear-gradient(135deg, #203eec 0%, #00d4ff 100%)",
-                boxShadow: "0 4px 20px rgba(32, 62, 236, 0.3)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 8px 30px rgba(32, 62, 236, 0.5), 0 0 40px rgba(0, 212, 255, 0.3)"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(32, 62, 236, 0.3)"
-              }}
-            >
-              Konsultasi
-            </button>
+          <form onSubmit={handleConsultationSubmit} className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                value={contactInput}
+                onChange={(e) => {
+                  setContactInput(e.target.value)
+                  if (errorMsg) setErrorMsg("")
+                }}
+                placeholder="Masukkan email atau No WhatsApp Anda"
+                aria-label="Email atau No WhatsApp untuk konsultasi"
+                className="px-4 py-2.5 text-sm bg-white rounded-lg border border-slate-300 focus:ring-2 focus:ring-[#203eec] outline-none flex-1 shadow-sm text-slate-900"
+              />
+              <button
+                type="submit"
+                className="px-5 py-2.5 text-sm font-medium text-white rounded-lg transition-all relative overflow-hidden shrink-0 shadow-md hover:opacity-95"
+                style={{
+                  background: "linear-gradient(135deg, #203eec 0%, #00d4ff 100%)",
+                  boxShadow: "0 4px 20px rgba(32, 62, 236, 0.3)",
+                }}
+              >
+                Konsultasi
+              </button>
+            </div>
+            {errorMsg && (
+              <p className="text-xs text-red-500 font-medium pl-1">{errorMsg}</p>
+            )}
           </form>
         </div>
 
         {/* Bottom Copyright & Legal */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-12 pt-8 border-t border-slate-200">
           <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} portfolio. Jasa Pembuatan Website & Aplikasi Karawang, Cikarang, Subang, Bekasi. All rights reserved.
+            © {new Date().getFullYear()} Fibecodes. Jasa Pembuatan Website & Aplikasi Karawang, Cikarang, Subang, Bekasi. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">
+            <Link href="/" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="#" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">
+            <Link href="/" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">
               Terms of Service
             </Link>
           </div>

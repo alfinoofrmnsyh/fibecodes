@@ -11,10 +11,14 @@ const interTight = Inter_Tight({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fibecodes.com"),
   title: "Fibecodes | Jasa Pembuatan Website & Aplikasi Kustom Profesional",
   description: "Wujudkan solusi digital yang membantu bisnis Anda berkembang lebih cepat. Spesialis pembuatan website dan aplikasi kustom untuk efisiensi operasional dan konversi penjualan.",
   icons: {
-    icon: "/images/logo-fibe.png", // Sesuaikan dengan lokasi file logo Anda di folder public
+    icon: "/images/logo-fibe.png",
+  },
+  alternates: {
+    canonical: "/",
   },
   keywords: [
     "jasa pembuatan website",
@@ -30,8 +34,14 @@ export const metadata: Metadata = {
     description: "Solusi digital dan pengembangan software kustom untuk mengotomatisasi operasional serta mendongkrak konversi bisnis Anda.",
     type: "website",
     locale: "id_ID",
+    url: "https://fibecodes.com",
+    siteName: "Fibecodes",
   },
-  generator: 'v0.app',
+  twitter: {
+    card: "summary_large_image",
+    title: "Fibecodes | Jasa Pembuatan Website & Aplikasi Kustom Profesional",
+    description: "Solusi digital dan pengembangan software kustom untuk mengotomatisasi operasional serta mendongkrak konversi bisnis Anda.",
+  },
 }
 
 export const viewport: Viewport = {
@@ -46,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${interTight.className} font-sans antialiased`}>
         <MagneticCursor />
         {children}

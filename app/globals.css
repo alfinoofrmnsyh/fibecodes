@@ -37,6 +37,18 @@
   --sidebar-accent-foreground: oklch(0.03 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Fibecodes Warm Ivory & Ethereal Prismatic Tokens */
+  --canvas: #F5F4F0;
+  --surface: #FFFFFF;
+  --surface-muted: #FAFAF8;
+  --ink-primary: #20252B;
+  --ink-muted: #707782;
+  --ink-faint: #9EA5B0;
+  --border-neutral: #E5E4DF;
+  --border-subtle: rgba(229, 228, 223, 0.7);
+  --accent-lavender: #D9D0F7;
+  --accent-cyan: #D7F0F4;
 }
 
 .dark {
@@ -113,6 +125,32 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Fibecodes Design System Mappings */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink-primary);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-border-neutral: var(--border-neutral);
+  --color-lavender: var(--accent-lavender);
+  --color-cyan: var(--accent-cyan);
+}
+
+/* Prismatic & Subtle Glassmorphism Utilities */
+.prismatic-sheen {
+  background: linear-gradient(135deg, rgba(217, 208, 247, 0.35) 0%, rgba(215, 240, 244, 0.4) 100%);
+}
+
+.prismatic-badge {
+  background: linear-gradient(135deg, rgba(217, 208, 247, 0.5) 0%, rgba(215, 240, 244, 0.55) 100%);
+  border: 1px solid rgba(217, 208, 247, 0.75);
+  color: #20252B;
+}
+
+.prismatic-glow-subtle {
+  background: radial-gradient(circle at 50% 0%, rgba(217, 208, 247, 0.25) 0%, rgba(215, 240, 244, 0.15) 50%, transparent 80%);
 }
 
 @layer base {
@@ -491,5 +529,13 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-orb-rotate {
     animation: none;
+  }
+}
+
+/* Hero responsive mask: apply SVG stepped notch only on desktop (>=768px), keep clean rounded corners on mobile */
+@media (min-width: 768px) {
+  .hero-mask-desktop {
+    mask: url(#heroMask);
+    -webkit-mask: url(#heroMask);
   }
 }

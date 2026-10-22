@@ -1,227 +1,104 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { cn } from "@/lib/utils"
-import { ChevronDown, ChevronUp } from "lucide-react"
-import { steps } from "./data"
+import AccordionGallery, { AccordionGalleryItem } from "@/components/ui/accordion-gallery"
+
+const workflowItems: AccordionGalleryItem[] = [
+  {
+    step: "01",
+    label: "01. Konsultasi & Blueprint",
+    title: "Konsultasi & Blueprint",
+    subtitle: "Analisis Kebutuhan & Estimasi",
+    description:
+      "Diskusikan ide, ruang lingkup fitur, dan target bisnis untuk menyusun blueprint teknis serta estimasi biaya transparan.",
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80",
+    link: "https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20layanan%20pembuatan%20website%20dan%20sistem%20digital.",
+  },
+  {
+    step: "02",
+    label: "02. Prototipe & Desain UI/UX",
+    title: "Prototipe & Desain UI/UX",
+    subtitle: "Visualisasi Alur & Wireframing",
+    description:
+      "Merancang visualisasi antarmuka dan user flow interaktif agar Anda mendapatkan gambaran utuh sebelum tahap koding dimulai.",
+    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1200&q=80",
+    link: "https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20desain%20UI/UX.",
+  },
+  {
+    step: "03",
+    label: "03. Pengembangan Sistem",
+    title: "Pengembangan Sistem",
+    subtitle: "Rekayasa Kode Bersih & Skalabel",
+    description:
+      "Tim engineer membangun arsitektur database, performa frontend, dan backend scalable dengan laporan kemajuan berkala.",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+    link: "https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20pengembangan%20sistem.",
+  },
+  {
+    step: "04",
+    label: "04. Quality Assurance",
+    title: "Quality Assurance & Testing",
+    subtitle: "Pengujian Menyeluruh & Keamanan",
+    description:
+      "Uji fungsional komprehensif, audit keamanan data, optimasi kecepatan query, dan uji kompatibilitas multi-perangkat.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    link: "https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20sistem%20digital.",
+  },
+  {
+    step: "05",
+    label: "05. Peluncuran & Pemeliharaan",
+    title: "Peluncuran & Pemeliharaan",
+    subtitle: "Go-Live & Dukungan Jangka Panjang",
+    description:
+      "Rilis ke server produksi, serah terima hak akses penuh, serta garansi pemeliharaan sistem jangka panjang yang responsif.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    link: "https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20maintenance%20dan%20hosting.",
+  },
+]
 
 export default function HowItWorks() {
-  const [activeStep, setActiveStep] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isVisible, setIsVisible] = useState(false) // State untuk mendeteksi apakah section sudah terlihat
-  const sectionRef = useRef<HTMLElement>(null)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-
-  // Observer untuk mendeteksi saat section masuk ke viewport (layar pengguna)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 } // Berjalan saat 30% section terlihat di layar
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-    }
-  }, [])
-
-  // Auto-advance steps hanya berjalan jika section sudah terlihat DAN tidak di-pause
-  useEffect(() => {
-    if (!isVisible || isPaused) return
-
-    intervalRef.current = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length)
-    }, 4000)
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [isVisible, isPaused])
-
-  const pauseAnimation = () => setIsPaused(true)
-  const resumeAnimation = () => setIsPaused(false)
-
-  const goToStep = (index: number) => {
-    setActiveStep(index)
-    pauseAnimation()
-  }
-
-  const goToPrevStep = () => {
-    setActiveStep((prev) => (prev - 1 + steps.length) % steps.length)
-    pauseAnimation()
-  }
-
-  const goToNextStep = () => {
-    setActiveStep((prev) => (prev + 1) % steps.length)
-    pauseAnimation()
-  }
-
   return (
     <section
-      ref={sectionRef}
-      className="py-20 bg-background flex justify-center items-center"
-      aria-labelledby="how-it-works-title"
-      onMouseEnter={pauseAnimation}
-      onMouseLeave={resumeAnimation}
-      onFocus={pauseAnimation}
-      onBlur={resumeAnimation}
+      id="howitworks"
+      className="py-24 md:py-32 bg-[#F5F4F0] border-t border-[#E5E4DF] relative overflow-hidden"
+      aria-labelledby="workflow-heading"
     >
-      {/* Wrapper utama dibuat ke tengah dengan max-w-5xl */}
-      <div className="container max-w-5xl px-4 md:px-6 mx-auto">
-        <div className="text-center mb-16">
-          <h2 id="how-it-works-title" className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">
-            Alur Kerja Kemitraan
+      <div className="max-w-[1240px] mx-auto px-6 md:px-12">
+        {/* Section Header */}
+        <div className="max-w-2xl mb-12 md:mb-16">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#A99BEA]" aria-hidden="true" />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#707782]">
+              PROSES KERJA
+            </span>
+          </div>
+          <h2
+            id="workflow-heading"
+            className="text-3xl sm:text-4xl lg:text-[46px] font-semibold text-[#20252B] tracking-tight leading-[1.15]"
+          >
+            Dari ide ke solusi digital
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Proses kerja yang mudah, transparan, dan terstruktur dari awal konsultasi hingga aplikasi rilis.
+          <p className="mt-4 text-base sm:text-lg text-[#707782] leading-relaxed">
+            Alur kerja yang terstruktur, transparan, dan terukur dari konsultasi awal hingga aplikasi siap melayani ribuan pengguna.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_1.6fr] gap-8 items-center justify-center">
-          {/* Navigasi Samping */}
-          <nav className="relative flex flex-col gap-4 mx-auto lg:mx-0 w-full max-w-xs" aria-label="Process steps">
-            <div
-              className="absolute left-6 top-6 w-0.5 bg-muted"
-              style={{
-                height: "calc(100% - 12px)",
-                top: "6px",
-              }}
-              aria-hidden="true"
-            />
-
-            {steps.map((step, index) => (
-              <button
-                key={step.id}
-                onClick={() => goToStep(index)}
-                className={cn(
-                  "relative flex items-start gap-4 text-left transition-all duration-300 group",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-2",
-                  activeStep === index ? "opacity-100" : "opacity-60 hover:opacity-80",
-                )}
-                aria-current={activeStep === index ? "step" : undefined}
-              >
-                <div
-                  className={cn(
-                    "relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2",
-                    "transition-colors duration-300 text-sm font-semibold",
-                    activeStep === index
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-muted bg-background group-hover:border-primary/70",
-                  )}
-                  aria-hidden="true"
-                >
-                  <span>{step.id}</span>
-                </div>
-
-                <div className="pt-1">
-                  <h3
-                    className={cn(
-                      "text-base font-semibold transition-colors duration-300 line-clamp-1",
-                      activeStep === index ? "text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {step.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{step.subtitle}</p>
-                </div>
-              </button>
-            ))}
-          </nav>
-
-          {/* Kotak Card Penjelasan (Tanpa Gambar & Proporsional) */}
-          <div className="relative overflow-hidden rounded-xl border bg-background p-8 shadow-sm min-h-[360px] flex items-center">
-            {steps.map((step, index) => (
-              <div
-                key={step.id}
-                className={cn(
-                  "flex flex-col justify-center transition-all duration-500 absolute inset-0 p-8 md:p-10",
-                  activeStep === index
-                    ? "translate-x-0 opacity-100"
-                    : activeStep > index
-                      ? "-translate-x-full opacity-0"
-                      : "translate-x-full opacity-0",
-                )}
-                aria-hidden={activeStep !== index}
-                id={`step-content-${step.id}`}
-              >
-                <span className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
-                  Langkah {step.id} dari {steps.length}
-                </span>
-                <h4 className="text-2xl font-semibold mb-3">{step.title}</h4>
-                <p className="text-muted-foreground mb-6 leading-relaxed text-sm md:text-base">{step.subtitle}</p>
-                
-                <ul className="space-y-2.5">
-                  {step.description.map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="h-5 w-5 rounded-full bg-primary/10 text-primary flex items-center justify-center mt-0.5 flex-shrink-0">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                      </span>
-                      <span className="text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-
-            {/* Tombol Navigasi Bawah Kanan */}
-            <div className="absolute bottom-6 right-6 flex gap-2 z-20">
-              <button
-                onClick={goToPrevStep}
-                className="p-2.5 rounded-full bg-muted hover:bg-muted/80 transition-colors shadow-sm"
-                aria-label="Langkah sebelumnya"
-              >
-                <ChevronUp className="h-4 w-4" />
-              </button>
-              <button
-                onClick={goToNextStep}
-                className="p-2.5 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors shadow-sm"
-                aria-label="Langkah berikutnya"
-              >
-                <ChevronDown className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+        {/* Accordion Gallery Component */}
+        <div className="w-full">
+          <AccordionGallery
+            items={workflowItems}
+            defaultIndex={2}
+            expandRatio={0.52}
+            trigger="hover"
+            accentColor="#10b981"
+            overlayColor="#02343c"
+            height={480}
+            gap={12}
+            radius={20}
+            tilt={0}
+          />
         </div>
 
-        {/* Indikator Mobile */}
-        <div className="flex justify-center gap-2 mt-6 lg:hidden">
-          {steps.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToStep(index)}
-              className={cn(
-                "w-2.5 h-2.5 rounded-full transition-colors",
-                activeStep === index ? "bg-primary" : "bg-muted hover:bg-primary/50",
-              )}
-              aria-label={`Buka langkah ${index + 1}`}
-              aria-current={activeStep === index ? "step" : undefined}
-            />
-          ))}
-        </div>
+
       </div>
     </section>
   )

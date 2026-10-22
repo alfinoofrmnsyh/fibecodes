@@ -66,7 +66,7 @@ export default function FaqCta() {
               <div className="flex items-center gap-4 mb-4">
                 <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 bg-muted flex-shrink-0">
                   <Image
-                    src="images/konsul.png"
+                    src="/images/konsul.png"
                     alt="Tim Ahli Fibe"
                     fill
                     className="object-cover"
@@ -81,9 +81,9 @@ export default function FaqCta() {
                 Punya pertanyaan seputar kebutuhan digital bisnis Anda? Diskusikan langsung bersama tim ahli kami sebelum memulai proyek.
               </p>
 
-              {/* Tombol dengan sentuhan bg-gradient-to-r from-[#203eec] to-[#00d4ff] */}
+              {/* Tombol Konsultasi WhatsApp Resmi */}
               <a
-                href="https://wa.me/"
+                href="https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20gratis%2015%20menit%20mengenai%20kebutuhan%20digital%20bisnis."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-full bg-gradient-to-r from-[#203eec] to-[#00d4ff] text-white font-semibold text-sm shadow-md hover:opacity-95 transition-all transform hover:-translate-y-0.5"

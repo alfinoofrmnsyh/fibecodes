@@ -47,7 +47,7 @@ export function Header() {
     <>
       {/* Hidden SEO Metadata optimized for regional software house / web developer keywords */}
       <div className="sr-only">
-        <h1>Jasa Pembuatan Website Karawang, Bekasi, Cikarang, dan Subang Profesional</h1>
+        <p className="font-semibold">Jasa Pembuatan Website Karawang, Bekasi, Cikarang, dan Subang Profesional</p>
         <p>
           Layanan pembuatan website company profile, toko online e-commerce, sistem informasi, dan aplikasi custom terbaik 
           untuk wilayah Karawang, Bekasi, Cikarang, Subang, dan sekitarnya. Solusi digital marketing & pengembangan software terpercaya.
@@ -58,13 +58,13 @@ export function Header() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled 
-            ? "bg-zinc-350/80 backdrop-blur-md shadow-lg shadow-black/20" 
-            : "bg-transparent",
+            ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-[#E5E4DF]/70" 
+            : "bg-[#F5F4F0]/90 backdrop-blur-md md:bg-transparent md:backdrop-blur-none",
         )}
       >
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12">
           <nav className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo - Diperbesar ukurannya di mobile */}
+            {/* Logo */}
             <Link
               href="/"
               onClick={(e) => {
@@ -74,7 +74,7 @@ export function Header() {
               className="flex items-center gap-2"
               aria-label="Jasa Pembuatan Website Karawang Bekasi Cikarang Subang"
             >
-              <div className="relative w-[110px] h-[40px] md:w-[130px] md:h-[50px]">
+              <div className="relative w-[110px] h-[38px] md:w-[130px] md:h-[50px]">
                 <Image
                   src="/images/logo.png"
                   alt="Logo Jasa Pembuatan Website Karawang Bekasi Cikarang Subang"
@@ -102,8 +102,10 @@ export function Header() {
 
             {/* CTA Button */}
             <div className="hidden md:block">
-              <Link
-                href="#contact"
+              <a
+                href="https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20layanan%20pembuatan%20website%20dan%20aplikasi."
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-full text-white transition-all hover:shadow-xl relative overflow-hidden group"
                 style={{
                   background: "linear-gradient(135deg, #203eec 0%, #00d4ff 100%)",
@@ -113,12 +115,16 @@ export function Header() {
                 <span className="relative z-10">Konsultasi</span>
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-[#203eec] to-[#00d4ff]" />
-              </Link>
+              </a>
             </div>
 
-            {/* Mobile Menu Button - Diubah warnanya jadi putih agar terlihat */}
-            <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden p-2 -mr-2 text-white" aria-label="Open menu">
-              <Menu className="w-7 h-7" />
+            {/* Mobile Menu Button - Frosted glass pill button with clear contrast */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden w-10 h-10 rounded-full bg-white/80 backdrop-blur-md border border-[#E5E4DF] flex items-center justify-center text-[#20252B] shadow-sm hover:bg-white active:scale-95 transition-all"
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5 text-[#20252B]" />
             </button>
           </nav>
         </div>
@@ -156,8 +162,10 @@ export function Header() {
               ))}
             </nav>
             <div className="mt-auto">
-              <Link
-                href="#contact"
+              <a
+                href="https://wa.me/6289615799089?text=Halo%20Fibecodes,%20saya%20ingin%20konsultasi%20mengenai%20layanan%20pembuatan%20website%20dan%20aplikasi."
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="inline-flex items-center justify-center w-full px-5 py-3 text-base font-medium rounded-full text-white transition-all hover:shadow-xl relative overflow-hidden group"
                 style={{
@@ -167,7 +175,7 @@ export function Header() {
               >
                 <span className="relative z-10">Konsultasi</span>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-[#203eec] to-[#00d4ff]" />
-              </Link>
+              </a>
             </div>
           </div>
         </div>
