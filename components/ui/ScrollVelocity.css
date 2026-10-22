@@ -1,0 +1,92 @@
+.parallax {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.scroller {
+  display: flex;
+  white-space: nowrap;
+  text-align: center;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  will-change: transform;
+}
+
+.scroller span {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Fibecodes Premium Skill Chips Velocity Styling
+   ========================================================================== */
+
+.fibecodes-skill-velocity {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 4px 0;
+}
+
+.skill-chip-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+
+.skill-chip-set {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 10px;
+  flex-shrink: 0;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  border: 1px solid #e5e4df;
+  color: #20252b;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(32, 37, 43, 0.03);
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.skill-chip:hover {
+  border-color: #a99bea;
+  background-color: #faf9ff;
+  box-shadow: 0 4px 14px -3px rgba(169, 155, 234, 0.22);
+}
+
+.skill-chip__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: #a99bea;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Reduced motion static fallback */
+@media (prefers-reduced-motion: reduce) {
+  .scroller,
+  .skill-chip-track {
+    will-change: auto;
+    animation: none !important;
+    transform: none !important;
+  }
+}

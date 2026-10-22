@@ -10,9 +10,12 @@ import HowItWorks from "@/components/sections/howitworks"
 import WhyChooseUs from "@/components/sections/whychooseus"
 import FaqCta from "@/components/sections/faq"
 
+import { InitialLoader } from "@/components/ui/initial-loader"
+
 export default function HomePage() {
   return (
     <>
+      <InitialLoader />
       <Header />
       <main>
         <Hero />
